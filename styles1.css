@@ -1,0 +1,676 @@
+   body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(45deg,
+        #1b1a1a, #3e2a2a, #4a2c3c, #2d1e3f,
+        #1f3f3f, #3b3a4e, #2a1a2a, #1b1a1a
+      );
+      background-size: 400% 400%;
+      animation: hologramaOscuro 12s ease infinite;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes hologramaOscuro {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+   .particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(0, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: float 2s ease-out forwards;
+  z-index: 0; /* Asegura que esté detrás */
+}
+
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+    }
+
+
+
+#controlSonido {
+  position: absolute;
+  top: 60px; /* separa del borde superior */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; /* asegúrate de que esté encima del card */
+  background-image: linear-gradient(rgb(0, 0, 0),rgb(99, 97, 97));
+  font-size: 20px;
+  color: white;
+  border-radius: 10px;
+}
+#controlSonido:hover{
+ background-image: linear-gradient(rgb(112, 112, 112),rgb(0, 0, 0));
+}
+
+.charizard {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2; /* Encima de las partículas */
+}
+
+
+.perspective{
+  perspective: 1000px;
+}
+
+.carta_fondo{
+  height: 720px;
+  width: 450px;
+  background-color: #1d1b1b;
+  border-radius: 5%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: 0.5s;
+  box-shadow: 6px 6px 6px rgba(255, 255, 255, 0.205);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+}
+
+
+.carta_fondo::before{
+  content: "";
+  height: 690px;
+  width: 420px;
+  background-image: url(fondoperre.jpg);
+  background-size: cover;
+  border-radius: 5%;
+  position: absolute;
+  z-index: 1;
+  margin-left: calc((450px - 420px)/2);
+
+}
+.perspective:hover .carta_fondo {
+  animation: resplandorAnimado 1.8s infinite ease-in-out;
+}
+
+@keyframes resplandorAnimado {
+  0% {
+    box-shadow:
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 40px rgba(200, 200, 200, 0.4),
+      0 0 60px rgba(150, 150, 150, 0.2),
+      0 0 80px rgba(100, 100, 100, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(255, 255, 255, 0.9),
+      0 0 80px rgba(200, 200, 200, 0.6),
+      0 0 120px rgba(150, 150, 150, 0.4),
+      0 0 160px rgba(100, 100, 100, 0.2);
+  }
+  100% {
+    box-shadow:
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 40px rgba(200, 200, 200, 0.4),
+      0 0 60px rgba(150, 150, 150, 0.2),
+      0 0 80px rgba(100, 100, 100, 0.1);
+  }
+}
+
+
+
+.carta_fondo::after{
+  content: "";
+  position: absolute;
+  height: 1050px;
+  width: 150px;
+  background-image: linear-gradient(rgb(255, 255, 255),rgb(0, 255, 255));
+  margin-left: calc((460px - 150px)/2);
+  animation: rotar 1.5s linear infinite; 
+  visibility: hidden;
+} 
+
+
+
+.perspective:hover .carta_fondo::after{
+  visibility: visible;
+}
+
+.img_charizard{
+  height: 270px;
+  width: 360px;
+  background-image: url(perretv.png);
+  background-size: cover;
+  z-index: 2;
+  position: absolute;
+  margin-left: calc((450px - 375px)/2);
+  top: 75px;
+  border: 4px solid  #1d1b1b;
+  box-shadow: 6px 6px 6px rgba(255, 255, 255, 0.418);
+}
+
+.img_charizard:hover{
+  background-image: url(gifperre.gif);
+  background-size: cover;
+  background-position: -50px center;
+
+}
+
+
+
+.carta_fondo2{
+  height: 690px;
+  width: 420px;
+  background-image: url(perrefondo.gif);
+  background-size: cover;
+  border-radius: 5%;
+  position: absolute;
+  z-index: 1;
+  margin-left: calc((450px - 420px)/2);
+  visibility: hidden;
+}
+
+.perspective:hover .carta_fondo2{
+visibility: visible;
+}
+
+@keyframes rotar{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.fase_2{
+  position: absolute;
+  background-image: url(perreantes.png);
+  background-size: cover;
+  height: 60px;
+  width: 60px;
+  z-index: 3;
+  bottom: 645px;
+  margin-left: 30px;
+  border-radius: 50%;
+}
+
+.fase_2:hover{
+  background-image: url(perrehover.png);
+  background-size: cover;
+  border: 3px solid rgb(0, 255, 255);
+  bottom: 642px;
+}
+
+
+.nombre{
+  position: absolute;
+  z-index: 3;
+  bottom: 624px;
+  margin-left: 96px;
+}
+
+.nombre h2{
+  font-size: 36px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: white;
+}
+
+.nombre h2:hover{
+  color: #444343;
+  text-decoration: underline 6px rgb(0, 255, 255);
+}
+
+.nivel{
+  position: absolute;
+  z-index: 3;
+  bottom: 633px;
+  margin-left: 224px;
+}
+
+.nivel h6{
+  font-size: 12px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: white;
+}
+
+
+
+.power{
+  position: absolute;
+  z-index: 3;
+  bottom: 600px;
+  margin-left: 300px;
+}
+
+.power h6{
+  font-size: 24px;
+  color: white;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+
+.fire{
+  position: absolute;
+  background-image: url(snitchestatica.png);
+  background-color: #444343;
+  background-size: 50px;
+  background-position: center;
+  height: 30px;
+  width: 30px;
+  z-index: 3;
+  bottom: 654px;
+  margin-left: 390px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 3px rgba(255, 255, 255, 0.418);
+  
+}
+
+.fire:hover{
+  background-image: url(snitch.gif);
+  background-size: 50px;
+  border: 3px solid rgb(0, 255, 255);
+  bottom: 654px;
+}
+
+.descripcion{
+  position: absolute;
+  z-index: 3;
+  bottom: 219px;
+  margin-left: 51px;
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  height: 135px;
+  width: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.descripcion h3{
+  font-size: 13.5px;
+  color: white;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-style: italic;
+}
+
+.descripcion:hover{
+  box-shadow:  6px 6px 6px rgba(5, 219, 226, 0.788);
+  background-image: linear-gradient(rgb(0, 255, 255, 0.5),rgba(59, 228, 228, 0.5));
+}
+
+.Habilidad{
+  position: absolute;
+  z-index: 3;
+  bottom: 165px;
+  margin-left: 36px;
+  font-size: 15px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(0, 0, 219);
+}
+
+.Habilidad_detalle{
+  position: absolute;
+  z-index: 3;
+  bottom: 135px;
+  margin-left: 36px;
+  font-size: 13.5px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+.Habilidad_detalle h5{
+  height: 15px;
+}
+
+.fire_2{
+  position: absolute;
+  background-image: url(snitchestatica.png);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+  height: 24px;
+  width: 24px;
+  z-index: 3;
+  bottom: 105px;
+  margin-left: 36px;
+  border-radius: 50%;
+  box-shadow: 3px 3px px rgba(0, 0, 0, 0.418);
+}
+
+.fire_2:hover{
+  background-image: url(snitch.gif);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;;
+}
+
+.fire_3{
+  position: absolute;
+  background-image: url(snitchestatica.png);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+  height: 24px;
+  width: 24px;
+  z-index: 3;
+  bottom: 105px;
+  margin-left: 66px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.418);
+}
+
+.fire_3:hover{
+  background-image: url(snitch.gif);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+}
+
+.fire_4{
+  position: absolute;
+  background-image: url(snitchestatica.png);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+  height: 24px;
+  width: 24px;
+  z-index: 3;
+  bottom: 105px;
+  margin-left: 96px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.418);
+}
+
+.fire_4:hover{
+  background-image: url(snitch.gif);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+}
+
+.fire_5{
+  position: absolute;
+  background-image: url(snitchestatica.png);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+  height: 24px;
+  width: 24px;
+  z-index: 3;
+  bottom: 105px;
+  margin-left: 126px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.418);
+}
+
+.fire_5:hover{
+  background-image: url(snitch.gif);
+  background-color: #7e7c7c;
+  background-size: 50px;
+  background-position: center;
+
+}
+
+.descripcion_2{
+  position: absolute;
+  z-index: 3;
+  bottom: 80px;
+  margin-left: 156px;
+  font-size: 18px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+.descripcion_3{
+  position: absolute;
+  z-index: 3;
+  bottom: 80px;
+  margin-left: 387px;
+  font-size: 18px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+.descripcion_2:hover{
+  color: #444343;
+  text-decoration: underline 3px rgb(0, 255, 255);
+}
+
+
+
+.descripcion_4{
+  position: absolute;
+  z-index: 3;
+  bottom: 54px;
+  margin-left: 39px;
+  font-size: 9.4px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+.Habilidad_detalle hr {
+  position: relative;
+  top: 5px;  /* Esto también mueve la línea hacia arriba */
+  color: white;
+  height: 3px;
+  right: 15px;
+  width: 385px;
+  background-image: linear-gradient(rgb(51, 49, 49),rgb(109, 96, 96));
+}
+
+.linea{
+  height: 3px;
+  width: 120px;
+  background-color: gray;
+  z-index: 3;
+  position: absolute;
+  margin-top: 600px;
+  margin-left: 39px;
+  box-shadow: 1.5px 1.5px 1.5px rgba(0, 0, 0, 0.418);
+}
+
+.debilidad{
+  position: absolute;
+  z-index: 3;
+  bottom: 27px;
+  margin-left: 39px;
+  font-size: 12px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(0, 0, 0);
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  color: white;
+  border-radius: 30px;
+  height: 24px;
+  width: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.debilidad:hover{
+  box-shadow:  6px 6px 6px rgba(5, 219, 226, 0.788);
+  background-image: linear-gradient(rgb(0, 255, 255, 0.5),rgba(59, 228, 228, 0.5));
+}
+
+.resistencia{
+  position: absolute;
+  z-index: 3;
+  bottom: 27px;
+  margin-left: 168px;
+  font-size: 12px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  border-radius: 30px;
+  height: 24px;
+  width: 114px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resistencia:hover{
+  box-shadow:  6px 6px 6px rgba(5, 219, 226, 0.788);
+  background-image: linear-gradient(rgb(0, 255, 255, 0.5),rgba(59, 228, 228, 0.5));
+}
+
+.retirada{
+  position: absolute;
+  z-index: 3;
+  bottom: 27px;
+  margin-left: 306px;
+  font-size: 12px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(0, 0, 0);
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  color: white;
+  border-radius: 30px;
+  height: 24px;
+  width: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retirada:hover{
+  box-shadow:  6px 6px 6px rgba(5, 219, 226, 0.788);
+  background-image: linear-gradient(rgb(0, 255, 255, 0.5),rgba(59, 228, 228, 0.5));
+}
+
+
+
+
+/* Animación para el cuadro de fondo */
+@keyframes slideIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animación de entrada */
+@keyframes slideIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animación de desaparición */
+@keyframes slideOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* Estilo del cuadro con animación de entrada */
+.swal2-popup.popup-animado {
+  animation: slideIn 0.5s ease-out;  /* Animación de entrada */
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  border: 5px solid #cfcfcf;         /* Borde rojo-anaranjado */
+  border-radius: 20px;               /* Bordes redondeados */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);  /* Sombra sutil */
+  color: white;
+}
+
+/* Estilo del cuadro con animación de entrada */
+.swal2-popup.popup-animado1 {
+  animation: slideIn 0.5s ease-out;  /* Animación de entrada */
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  border: 5px solid #09ff00;         /* Borde rojo-anaranjado */
+  border-radius: 20px;               /* Bordes redondeados */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);  /* Sombra sutil */
+  color: white;
+}
+.swal2-popup.popup-animado2 {
+  animation: slideIn 0.5s ease-out;  /* Animación de entrada */
+  background-image: linear-gradient(rgb(87, 87, 87),rgb(5, 5, 5));
+  border: 5px solid #ff0080;         /* Borde rojo-anaranjado */
+  border-radius: 20px;               /* Bordes redondeados */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);  /* Sombra sutil */
+  color: white;
+}
+.swal2-popup.popup-animado button{
+  background-color:#5e5a5a;
+  border-color: #444343;
+}
+.swal2-popup.popup-animado1 button{
+  background-color: #09ff00;
+}
+.swal2-popup.popup-animado2 button{
+  background-color: #ff0080;    
+}
+
+/* Estilo de desaparición */
+.swal2-popup.popup-desaparecer {
+  animation: slideOut 0.3s ease-in-out forwards;  /* Animación de salida */
+}
+
+/* Estilo del título */
+.swal2-title.titulo-estilo {
+  color: #000000;  /* Color rojo-anaranjado */
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Tipografía divertida */
+  font-size: 1.8em;  /* Tamaño de fuente mayor */
+  text-align: center;  /* Alineación centrada */
+}
+/* Estilo del título */
+.swal2-title.titulo-estilo1 {
+  color: #000000;  /* Color rojo-anaranjado */
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Tipografía divertida */
+  font-size: 1.8em;  /* Tamaño de fuente mayor */
+  text-align: center;  /* Alineación centrada */
+}
+
+.swal2-title.titulo-estilo2 {
+  color: #000000;  /* Color rojo-anaranjado */
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Tipografía divertida */
+  font-size: 1.8em;  /* Tamaño de fuente mayor */
+  text-align: center;  /* Alineación centrada */
+}
+
+#venomBtn {
+  position: relative;
+  z-index: 10;
+  padding: 15px 30px;
+  font-size: 18px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+#venomOverlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, #000 60%, #111 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+  transition: width 0.8s ease, height 0.8s ease;
+  pointer-events: none;
+}

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Expecto Patronum</title>
+  <style>
+    body {
+      background-color: #000;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #spell {
+      font-size: 3em;
+      opacity: 0;
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      transition: opacity 1s ease-in-out;
+      z-index: 10;
+    }
+
+    .glow {
+      text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 80px #00ffff;
+    }
+
+    .wave {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00ffff 0%, transparent 70%);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 1;
+      animation: expandWave 2s ease-out forwards;
+    }
+
+    @keyframes expandWave {
+      0% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(5); }
+    }
+
+    @keyframes expandBigWave {
+      0% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(20); }
+    }
+
+    .wave-smallest { transform: scale(0.02); }
+    .wave-smaller  { transform: scale(0.05); }
+    .wave-small    { transform: scale(0.1); }
+    .wave-mid      { transform: scale(0.15); }
+    .wave-big      { transform: scale(2); }
+
+    #container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #patronus {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('patronus.gif') no-repeat center center;
+      background-size: contain;
+      background-color: white;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 5;
+    }
+
+    #particles-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #ff0000;
+      border-radius: 50%;
+      animation: float 2s ease-out forwards;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) scale(0.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container" onclick="castSpell(event)">
+    <div id="spell"></div>
+    <div id="patronus"></div>
+    <div id="particles-layer"></div>
+    <audio id="audio" src="specto.mp3"></audio>
+  </div>
+
+  <script>
+    let clicks = 0;
+    let spellStarted = false;
+    let spellEnded = false;
+    let spellLocked = false;
+    let particleInterval;
+    let bigWaveTimeout;
+    let patronusTimeout;
+    let inactivityTimer;
+
+    const container = document.getElementById("container");
+    const spell = document.getElementById("spell");
+    const patronus = document.getElementById("patronus");
+    const audio = document.getElementById("audio");
+    const particlesLayer = document.getElementById("particles-layer");
+
+    function castSpell(event) {
+      if (spellEnded) return;
+
+      clicks++;
+      resetInactivityTimer();
+
+      // Obtener posición relativa al container
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const sizeClasses = ["wave-smallest", "wave-smaller", "wave-small", "wave-mid"];
+      const sizeClass = sizeClasses[Math.min(clicks - 1, sizeClasses.length - 1)];
+
+      // Crear onda en la posición del clic sólo para los primeros 4 clics
+      if (clicks <= sizeClasses.length) {
+        createWave(sizeClass, "#0099cc", false, x, y);
+      } else if (!spellStarted) {
+        // Si por alguna razón no está iniciado y clic >4, crear onda centrada (fallback)
+        createWave(sizeClass, "#0099cc");
+      }
+
+      if (!spellStarted) {
+        spellStarted = true;
+
+        spell.classList.add("glow");
+        spell.style.opacity = 1;
+        audio.currentTime = 0;
+        audio.play();
+
+        bigWaveTimeout = setTimeout(() => {
+          if (!spellEnded) createWave("wave-big", "#00ffff", true, container.clientWidth / 2, container.clientHeight / 2);
+        }, 3500);
+
+        patronusTimeout = setTimeout(() => {
+          if (!spellEnded) {
+            patronus.style.opacity = 1;
+            startParticleLoop(); // iniciar partículas
+            spellEnded = true;
+            spellLocked = true;
+          }
+        }, 4500);
+      }
+    }
+
+    function resetInactivityTimer() {
+      if (spellLocked) return;
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(cancelSpell, 300);
+    }
+
+    function cancelSpell() {
+      if (spellLocked) return;
+
+      audio.pause();
+      audio.currentTime = 0;
+
+      clearTimeout(bigWaveTimeout);
+      clearTimeout(patronusTimeout);
+      clearTimeout(inactivityTimer);
+      clearInterval(particleInterval);
+
+      spell.classList.remove("glow");
+      spell.style.opacity = 0;
+      patronus.style.opacity = 0;
+      particlesLayer.innerHTML = "";
+
+      clicks = 0;
+      spellStarted = false;
+      spellEnded = false;
+      spellLocked = false;
+    }
+
+    // Modificada para aceptar posición opcional (x,y)
+    function createWave(sizeClass = "wave-small", color = "#00ffff", isFinal = false, x = null, y = null) {
+      const wave = document.createElement("div");
+      wave.classList.add("wave", sizeClass);
+      wave.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+      wave.style.animation = isFinal ? "expandBigWave 2s ease-out forwards" : "expandWave 2s ease-out forwards";
+
+      if (x !== null && y !== null) {
+        wave.style.left = (x - 50) + "px"; // centrar la onda en x,y
+        wave.style.top = (y - 50) + "px";
+      } else {
+        // Si no hay posición, centrar en pantalla (como antes)
+        wave.style.left = "50%";
+        wave.style.top = "50%";
+        wave.style.marginLeft = "-50px";
+        wave.style.marginTop = "-50px";
+      }
+
+      container.appendChild(wave);
+      setTimeout(() => wave.remove(), 2000);
+    }
+
+    function createParticle() {
+      const particle = document.createElement("div");
+      particle.classList.add("particle");
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.width = `${Math.random() * 40 + 20}px`;
+      particle.style.height = particle.style.width;
+      particle.style.background = `rgba(0, 255, 255, ${Math.random()})`;
+      particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+
+      particlesLayer.appendChild(particle);
+      setTimeout(() => particle.remove(), 3000);
+    }
+
+    function startParticleLoop() {
+      createParticle(); // inicial
+      particleInterval = setInterval(() => {
+        for (let i = 0; i < 100; i++) createParticle();
+      }, 400);
+    }
+
+    audio.addEventListener("ended", () => {
+      clearInterval(particleInterval);
+      window.location.href = "carta.html";
+    });
+  </script>
+</body>
+</html>

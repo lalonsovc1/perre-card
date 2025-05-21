@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plataforma 9 3/4</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #gif-container {
+      position: absolute;
+      top: 50%;
+      left: -480px; /* Comienza fuera a la izquierda */
+      transform: translateY(-50%);
+      transition: left 9s linear;
+      width: 480px;
+      height: 480px;
+    }
+
+    #gif-container.mover {
+      left: 100vw; /* Termina fuera a la derecha */
+    }
+
+   button {
+  position: relative;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+  transition: opacity 0.5s;
+  width: 150px ;
+  height: 150px;
+  border-radius: 50%;
+   background-color: transparent;
+  background-image: url("934.png");
+  background-size: contain;    /* Ajusta la imagen al tamaño del botón */
+  background-repeat: no-repeat; /* Que no se repita */
+  background-position: center;  /* Centra la imagen */
+  border: none;                 /* Opcional: quita borde */
+  color: transparent;           /* Opcional: oculta texto si solo quieres la imagen */
+}
+ button:hover {
+  position: relative;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+  transition: opacity 0.5s;
+  width: 150px ;
+  height: 150px;
+  border-radius: 45%;
+   background-color: red;
+  background-image: url("934.png");
+  background-size: contain;    /* Ajusta la imagen al tamaño del botón */
+  background-repeat: no-repeat; /* Que no se repita */
+  background-position: center;  /* Centra la imagen */
+  border: none;                 /* Opcional: quita borde */
+  color: transparent;           /* Opcional: oculta texto si solo quieres la imagen */
+}
+
+
+    button.oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="gif-container">
+    <img src="pasarela1.gif" width="480" height="480" alt="GIF animado" />
+  </div>
+
+  <button id="btn-iniciar" onclick="iniciarAnimacion()">Iniciar</button>
+
+  <!-- Audio que sonará al presionar el botón -->
+  <audio id="audio" src="harry.mp3" preload="auto"></audio>
+
+  <script>
+    function iniciarAnimacion() {
+      const gif = document.getElementById('gif-container');
+      const boton = document.getElementById('btn-iniciar');
+      const audio = document.getElementById('audio');
+
+      // Oculta el botón con animación
+      boton.classList.add('oculto');
+
+      // Reproduce el audio
+      audio.play();
+
+      // Inicia la animación del GIF
+      gif.classList.add('mover');
+
+      // Redirige después de 6 segundos
+      setTimeout(() => {
+        window.location.href = 'carta.html';
+      }, 9000);
+    }
+  </script>
+
+</body>
+</html>
